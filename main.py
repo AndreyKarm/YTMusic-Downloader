@@ -15,6 +15,7 @@ ydl_opts = {
     "outtmpl": {"default": "out/%(title)s.%(ext)s"}
 }
 
+
 def download_video(video_url):
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         try:
@@ -49,14 +50,17 @@ def extract_links(url):
             print(f"Video URL: {video_url}")
     return arr
 
+
 if __name__ == "__main__":
     stopwatch = Stopwatch(2)
     stopwatch.start()
-    
+
     links = extract_links(url)
 
     with ThreadPoolExecutor() as thread_executor:
-        thread_executor.map(process_videos, [links[i:i+5] for i in range(0, len(links), 5)])
-        
+        thread_executor.map(
+            process_videos, [links[i:i+5] for i in range(0, len(links), 5)])
+
     stopwatch.stop()
-    print("It took %d seconds to download %d songs." % (stopwatch.duration, len(links)))
+    print("It took %d seconds to download %d songs." %
+          (stopwatch.duration, len(links)))
