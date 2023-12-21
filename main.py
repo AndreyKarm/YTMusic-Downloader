@@ -1,8 +1,7 @@
 import yt_dlp
-from stopwatch import Stopwatch
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 
-url = 'https://music.youtube.com/playlist?list=PLGD_0JBel89PIs6XIYUFPtQNs0EOSfpds&si=Lo8TZcwMZevEQ_JV'
+url = input("Input yt url: ")
 
 ydl_opts = {
     'format': 'm4a/bestaudio/best',
@@ -52,15 +51,9 @@ def extract_links(url):
 
 
 if __name__ == "__main__":
-    stopwatch = Stopwatch(2)
-    stopwatch.start()
 
     links = extract_links(url)
 
     with ThreadPoolExecutor() as thread_executor:
         thread_executor.map(
             process_videos, [links[i:i+5] for i in range(0, len(links), 5)])
-
-    stopwatch.stop()
-    print("It took %d seconds to download %d songs." %
-          (stopwatch.duration, len(links)))
